@@ -5,9 +5,11 @@
 Accepted (initial scaffold). Several follow-up decisions are still open and listed below.
 
 > **Note:** the backend module layout below has been superseded by
-> [ADR-0002](ADR-0002-plugin-architecture.md), which replaces the shared `core`
-> module with `common`, makes each sensor type its own drop-in module, and moves
-> the composition root's wiring to runtime service loading. The transport, topic
+> [ADR-0002](ADR-0002-plugin-architecture.md), which renames the shared kernel to
+> `common` and makes `core` the host, makes each sensor type its own drop-in
+> module, dissolves the four pipeline modules into `core` and the plugins, and
+> moves the composition root's wiring to runtime service loading. The modules now
+> live at the repository root rather than under `backend/`. The transport, topic
 > convention, frontend and simulator decisions here are unchanged.
 
 ## Context

@@ -3,8 +3,8 @@ target/
 *.class
 
 # JPMS runtime layers (build output - never commit JARs)
-backend/mods-mvn/
-backend/plugins/*.jar
+mods-mvn/
+plugins/*.jar
 
 # Node
 node_modules/
