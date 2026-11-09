@@ -4,6 +4,12 @@
 
 Accepted (initial scaffold). Several follow-up decisions are still open and listed below.
 
+> **Note:** the backend module layout below has been superseded by
+> [ADR-0002](ADR-0002-plugin-architecture.md), which replaces the shared `core`
+> module with `common`, makes each sensor type its own drop-in module, and moves
+> the composition root's wiring to runtime service loading. The transport, topic
+> convention, frontend and simulator decisions here are unchanged.
+
 ## Context
 
 The scope has been narrowed to a first concrete goal: a web dashboard that visualizes

@@ -8,19 +8,193 @@
     <artifactId>backend-parent</artifactId>
     <version>0.1.0-SNAPSHOT</version>
     <packaging>pom</packaging>
+    <name>Building Assessment Ukraine - backend</name>
+    <description>
+        Sensor pipeline as a JPMS plugin architecture: shared contracts in `common`,
+        a host in `app`, and one drop-in module per sensor type.
+    </description>
 
     <properties>
         <maven.compiler.release>21</maven.compiler.release>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+
+        <!-- Where a module's JAR is installed for running the app. The boot layer
+             by default; sensor plugins override this to ../plugins so they are
+             discovered at runtime instead of being resolved at startup. -->
+        <module.outputDir>${project.basedir}/../mods-mvn</module.outputDir>
+
+        <!-- Arguments passed by `mvn exec:exec`. The demo flag feeds canned
+             messages through the pipeline; clear it with -Dapp.args= once an
+             MQTT client is wired up. -->
+        <app.args>--demo</app.args>
     </properties>
 
     <modules>
-        <module>modules/core</module>
-        <module>modules/mqtt-ingestion</module>
-        <module>modules/sensor-decoding</module>
-        <module>modules/sensor-registry</module>
-        <module>modules/reading-store</module>
-        <module>modules/realtime-gateway</module>
+        <module>common</module>
+        <module>mqtt-ingestion</module>
+        <module>sensor-registry</module>
+        <module>reading-store</module>
+        <module>realtime-gateway</module>
         <module>app</module>
+        <!-- Sensor plugins. Adding one here is the only build-level change a new
+             sensor type needs; no existing module is touched. -->
+        <module>sensor-vibration</module>
+        <module>sensor-temperature</module>
     </modules>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>com.buildingassessment</groupId>
+                <artifactId>common</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.buildingassessment</groupId>
+                <artifactId>mqtt-ingestion</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.buildingassessment</groupId>
+                <artifactId>sensor-registry</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.buildingassessment</groupId>
+                <artifactId>reading-store</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.buildingassessment</groupId>
+                <artifactId>realtime-gateway</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
+    <build>
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-compiler-plugin</artifactId>
+                    <version>3.13.0</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-jar-plugin</artifactId>
+                    <version>3.4.1</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-dependency-plugin</artifactId>
+                    <version>3.6.1</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-clean-plugin</artifactId>
+                    <version>3.3.2</version>
+                </plugin>
+            </plugins>
+        </pluginManagement>
+
+        <plugins>
+            <!-- `mvn -N exec:exec` — boot layer from mods-mvn/, plugins
+                 discovered from plugins/ by ServiceLocator at runtime. The -N
+                 matters: the goal is configured on this project only, so letting
+                 the CLI descend into the modules would fail on a missing
+                 executable. -->
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>exec-maven-plugin</artifactId>
+                <version>3.2.0</version>
+                <inherited>false</inherited>
+                <executions>
+                    <execution>
+                        <goals><goal>exec</goal></goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <executable>${java.home}/bin/java</executable>
+                    <workingDirectory>${project.basedir}</workingDirectory>
+                    <arguments>
+                        <argument>--module-path=mods-mvn</argument>
+                        <argument>--add-modules=ALL-MODULE-PATH</argument>
+                        <argument>--module=com.buildingassessment.app/com.buildingassessment.app.Main</argument>
+                        <argument>${app.args}</argument>
+                    </arguments>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
+    <profiles>
+        <!-- Root pom (no src/): clean both runtime directories. -->
+        <profile>
+            <id>parent-project</id>
+            <activation>
+                <file><missing>src</missing></file>
+            </activation>
+            <build>
+                <plugins>
+                    <plugin>
+                        <artifactId>maven-clean-plugin</artifactId>
+                        <configuration>
+                            <filesets>
+                                <fileset><directory>mods-mvn</directory></fileset>
+                                <fileset>
+                                    <directory>plugins</directory>
+                                    <excludes><exclude>.gitkeep</exclude></excludes>
+                                </fileset>
+                            </filesets>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+
+        <!-- Child modules: install the JAR into the layer it belongs to. -->
+        <profile>
+            <id>child-project</id>
+            <activation>
+                <file><exists>src</exists></file>
+            </activation>
+            <build>
+                <plugins>
+                    <plugin>
+                        <artifactId>maven-dependency-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <id>copy-module-jar</id>
+                                <phase>install</phase>
+                                <goals><goal>copy</goal></goals>
+                                <configuration>
+                                    <artifactItems>
+                                        <artifactItem>
+                                            <groupId>${project.groupId}</groupId>
+                                            <artifactId>${project.artifactId}</artifactId>
+                                            <version>${project.version}</version>
+                                            <type>jar</type>
+                                        </artifactItem>
+                                    </artifactItems>
+                                    <outputDirectory>${module.outputDir}</outputDirectory>
+                                </configuration>
+                            </execution>
+                            <!-- Third-party runtime deps always go in the boot layer. -->
+                            <execution>
+                                <id>copy-external-deps</id>
+                                <phase>install</phase>
+                                <goals><goal>copy-dependencies</goal></goals>
+                                <configuration>
+                                    <outputDirectory>${project.basedir}/../mods-mvn</outputDirectory>
+                                    <includeScope>runtime</includeScope>
+                                    <excludeGroupIds>com.buildingassessment</excludeGroupIds>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
 </project>

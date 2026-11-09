@@ -13,37 +13,37 @@
 
     <artifactId>app</artifactId>
     <packaging>jar</packaging>
+    <name>app</name>
+    <description>Composition root and entry point.</description>
 
     <dependencies>
+        <!-- common is the only compile-time dependency. The pipeline modules are
+             runtime-only: app resolves them through ServiceLoader, and declaring
+             them at compile scope would reintroduce exactly the coupling this
+             architecture removes. -->
         <dependency>
             <groupId>com.buildingassessment</groupId>
-            <artifactId>core</artifactId>
-            <version>${project.version}</version>
+            <artifactId>common</artifactId>
         </dependency>
         <dependency>
             <groupId>com.buildingassessment</groupId>
             <artifactId>mqtt-ingestion</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>com.buildingassessment</groupId>
-            <artifactId>sensor-decoding</artifactId>
-            <version>${project.version}</version>
+            <scope>runtime</scope>
         </dependency>
         <dependency>
             <groupId>com.buildingassessment</groupId>
             <artifactId>sensor-registry</artifactId>
-            <version>${project.version}</version>
+            <scope>runtime</scope>
         </dependency>
         <dependency>
             <groupId>com.buildingassessment</groupId>
             <artifactId>reading-store</artifactId>
-            <version>${project.version}</version>
+            <scope>runtime</scope>
         </dependency>
         <dependency>
             <groupId>com.buildingassessment</groupId>
             <artifactId>realtime-gateway</artifactId>
-            <version>${project.version}</version>
+            <scope>runtime</scope>
         </dependency>
     </dependencies>
 </project>
