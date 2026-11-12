@@ -1,15 +1,26 @@
 package com.buildingassessment.building;
 
 public class Building {
-    private String id;
-    private String name;
-    private String address;
-    private int floors;
-    private double latitude;
-    private double longitude;
-    public Building(string id, string name, string adress, int floors, double lat, double longitude){
-        id = this.id;
-        name = this.name;
-        adress = this.name;
+    private final String id;
+    private final String name;
+    private final String address;
+    private final int floors;
+    private final double latitude;
+    private final double longitude;
+
+    public Building(String id, String name, String address, int floors, double latitude, double longitude) {
+        this.id = id;
+        this.name = name;
+        this.address = address;
+        this.floors = floors;
+        this.latitude = latitude;
+        this.longitude = longitude;
     }
+
+    public String getId() { return id; }
+    public String getName() { return name; }
+    public String getAddress() { return address; }
+    public int getFloors() { return floors; }
+    public double getLatitude() { return latitude; }
+    public double getLongitude() { return longitude; }
 }
