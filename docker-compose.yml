@@ -1,0 +1,31 @@
+# Local MQTT stack: Mosquitto broker + mock accelerometer sensors.
+#
+#   docker compose up --build
+#   docker compose exec mosquitto mosquitto_sub -t 'sensors/#' -v   # watch the traffic
+services:
+  mosquitto:
+    image: eclipse-mosquitto:2.0.20
+    container_name: mosquitto
+    ports:
+      - "1883:1883"
+    volumes:
+      - ./infra/mosquitto/mosquitto.conf:/mosquitto/config/mosquitto.conf:ro
+    healthcheck:
+      test: ["CMD", "mosquitto_sub", "-t", "$$SYS/#", "-C", "1", "-W", "3"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  sensor-simulator:
+    build: ./simulators
+    container_name: sensor-simulator
+    depends_on:
+      mosquitto:
+        condition: service_healthy
+    environment:
+      MQTT_HOST: mosquitto
+      MQTT_PORT: "1883"
+      SENSOR_CONFIG: /app/sensors.json
+    volumes:
+      - ./simulators/sensors.json:/app/sensors.json:ro
+    restart: unless-stopped
