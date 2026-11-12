@@ -2,6 +2,10 @@
 target/
 *.class
 
+# JPMS runtime layers (build output - never commit JARs)
+mods-mvn/
+plugins/*.jar
+
 # Node
 node_modules/
 dist/

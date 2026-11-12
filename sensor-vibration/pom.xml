@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>com.buildingassessment</groupId>
+        <artifactId>building-assessment</artifactId>
+        <version>0.1.0-SNAPSHOT</version>
+        <relativePath>../pom.xml</relativePath>
+    </parent>
+
+    <artifactId>sensor-vibration</artifactId>
+    <packaging>jar</packaging>
+    <name>Sensor plugin — vibration/strain (real device)</name>
+
+    <properties>
+        <!-- The one line that makes this a drop-in plugin instead of a boot
+             module: the JAR lands in plugins/, where ServiceLocator builds a
+             child layer from it at runtime. -->
+        <module.outputDir>${project.basedir}/../plugins</module.outputDir>
+    </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>com.buildingassessment</groupId>
+            <artifactId>common</artifactId>
+        </dependency>
+    </dependencies>
+</project>
