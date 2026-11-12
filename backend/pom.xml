@@ -16,6 +16,7 @@
 
     <modules>
         <module>modules/core</module>
+        <module>modules/building</module>
         <module>modules/mqtt-ingestion</module>
         <module>modules/sensor-decoding</module>
         <module>modules/sensor-registry</module>
