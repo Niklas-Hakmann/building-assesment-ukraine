@@ -1,9 +1,9 @@
 import com.buildingassessment.sensor.vibration.VibrationSensor;
-import com.buildingassessment.common.services.spi.IVibrationSensor;
+import com.buildingassessment.common.services.spi.IAccelerationSensor;
 
 module sensorVibration {
     requires common;
     requires org.eclipse.paho.client.mqttv3;
     requires org.json;
-    provides IVibrationSensor with VibrationSensor;
+    provides IAccelerationSensor with VibrationSensor;
 }

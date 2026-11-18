@@ -2,7 +2,7 @@ package com.buildingassessment.common.services.spi;
 
 import java.util.Date;
 
-public interface IVibrationSensor {
+public interface IAccelerationSensor {
 
     public double getDominantFrequencyX(int sensorID);
     public double getDominantFrequencyY(int sensorID);

@@ -17,9 +17,9 @@ import org.eclipse.paho.client.mqttv3.persist.MemoryPersistence;
 import org.json.JSONObject;
 
 import com.buildingassessment.common.data.Sensor;
-import com.buildingassessment.common.services.spi.IVibrationSensor;
+import com.buildingassessment.common.services.spi.IAccelerationSensor;
 
-public class VibrationSensor extends Sensor implements IVibrationSensor, MqttCallback {
+public class VibrationSensor extends Sensor implements IAccelerationSensor, MqttCallback {
 
     private static final String VIBRATION_TOPIC_FILTER = "sensors/vibration/#";
 
