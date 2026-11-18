@@ -42,6 +42,8 @@
  * inherits its requires clause, so a JSON or JDBC dependency added here is
  * forced onto every sensor plugin in the system.
  */
-module com.buildingassessment.common {
+module common {
+    exports com.buildingassessment.common.data;
     exports com.buildingassessment.common.util;
+    exports com.buildingassessment.common.services.spi;
 }

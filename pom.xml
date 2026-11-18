@@ -23,6 +23,7 @@
              sensor type needs; no existing module is touched. -->
         <module>sensor-vibration</module>
         <module>sensor-temperature</module>
+        <module>building</module>
     </modules>
 
     <properties>

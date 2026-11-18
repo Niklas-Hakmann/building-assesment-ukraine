@@ -1,5 +1,3 @@
-package com.buildingassessment.building;
-
 public class Building {
     private final String id;
     private final String name;
