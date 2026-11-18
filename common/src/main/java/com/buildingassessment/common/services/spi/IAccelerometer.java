@@ -1,6 +1,8 @@
 package com.buildingassessment.common.services.spi;
 
-public interface IAccelerometer {
+import com.buildingassessment.common.data.Sensor;
+
+public interface IAccelerometer extends Sensor {
 
     public double getDominantFrequencyX(int sensorID);
     public double getDominantFrequencyY(int sensorID);

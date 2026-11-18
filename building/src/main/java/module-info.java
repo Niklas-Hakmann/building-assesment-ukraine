@@ -1,3 +1,3 @@
-﻿module building {
+module building {
 
 }

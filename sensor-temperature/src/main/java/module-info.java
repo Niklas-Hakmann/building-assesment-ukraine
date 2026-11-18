@@ -11,5 +11,5 @@
  * {@code sensor-temperature/pom.xml} overrides {@code module.outputDir}.
  */
 module com.buildingassessment.sensor.temperature {
-    requires com.buildingassessment.common;
+    requires common;
 }

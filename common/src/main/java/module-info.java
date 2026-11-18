@@ -46,4 +46,6 @@ module common {
     exports com.buildingassessment.common.data;
     exports com.buildingassessment.common.util;
     exports com.buildingassessment.common.services.spi;
+
+    uses com.buildingassessment.common.services.spi.IAccelerometer;
 }
