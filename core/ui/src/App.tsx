@@ -1,8 +1,8 @@
-/**
- * Root component. Dashboard layout and the realtime connection are not wired up yet.
- */
+import { SensorDashboard } from './features/sensors';
+import './styles.css';
+
 function App() {
-  return <div>Building Assessment Ukraine - Sensor Dashboard</div>;
+  return <SensorDashboard />;
 }
 
 export default App;
