@@ -9,6 +9,10 @@ plugins/*.jar
 # PlatformIO (build output - never commit)
 firmware/.pio/
 
+# Python
+__pycache__/
+*.pyc
+
 # Node
 node_modules/
 dist/
