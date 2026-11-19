@@ -37,14 +37,18 @@ public class ApiServer {
             "ico", "image/x-icon");
 
     private final SensorReadings readings;
+    private final BuildingRepository buildings;
     private final Path staticRoot;
     private final HttpServer server;
 
-    public ApiServer(int port, SensorReadings readings, Path staticRoot) throws IOException {
+    public ApiServer(int port, SensorReadings readings, BuildingRepository buildings, Path staticRoot)
+            throws IOException {
         this.readings = readings;
+        this.buildings = buildings;
         this.staticRoot = staticRoot.toAbsolutePath().normalize();
         this.server = HttpServer.create(new InetSocketAddress(port), 0);
         server.createContext("/api/sensors", this::handleSensors);
+        server.createContext("/api/buildings", this::handleBuildings);
         server.createContext("/", this::handleStatic);
         server.setExecutor(Executors.newVirtualThreadPerTaskExecutor());
     }
@@ -68,6 +72,27 @@ public class ApiServer {
         String body = "{\"serverTime\":\"" + Instant.now() + "\",\"sensors\":[" + sensors + "]}";
         exchange.getResponseHeaders().set("Cache-Control", "no-store");
         send(exchange, 200, "application/json", body.getBytes(StandardCharsets.UTF_8));
+    }
+
+    /** Buildings and the sensors installed in each, from PostgreSQL. 503 if the database is unreachable. */
+    private void handleBuildings(HttpExchange exchange) throws IOException {
+        if (!"GET".equals(exchange.getRequestMethod())) {
+            send(exchange, 405, "text/plain; charset=utf-8", "Method Not Allowed".getBytes(StandardCharsets.UTF_8));
+            return;
+        }
+        exchange.getResponseHeaders().set("Cache-Control", "no-store");
+        try {
+            String body = "{\"buildings\":["
+                    + buildings.findAll().stream()
+                            .map(BuildingRepository.Building::toJson)
+                            .collect(Collectors.joining(","))
+                    + "]}";
+            send(exchange, 200, "application/json", body.getBytes(StandardCharsets.UTF_8));
+        } catch (java.sql.SQLException e) {
+            System.err.println("[api] database query failed: " + e.getMessage());
+            String body = "{\"error\":" + Json.string("Database unavailable: " + e.getMessage()) + "}";
+            send(exchange, 503, "application/json", body.getBytes(StandardCharsets.UTF_8));
+        }
     }
 
     private void handleStatic(HttpExchange exchange) throws IOException {

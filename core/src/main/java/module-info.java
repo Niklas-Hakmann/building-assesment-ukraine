@@ -20,4 +20,5 @@
 module com.buildingassessment.core {
     requires common;
     requires jdk.httpserver;
+    requires java.sql;
 }

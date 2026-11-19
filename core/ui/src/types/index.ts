@@ -29,6 +29,27 @@ export interface SensorsResponse {
   sensors: SensorReading[];
 }
 
+/** A sensor installed in a building, from the database (GET /api/buildings). */
+export interface SensorRef {
+  id: number;
+  type: string;
+}
+
+/** A building = one row of the Address table, with its installed sensors. */
+export interface Building {
+  id: number;
+  roadName: string;
+  houseNumber: string;
+  zip: string;
+  city: string;
+  floors: number;
+  sensors: SensorRef[];
+}
+
+export interface BuildingsResponse {
+  buildings: Building[];
+}
+
 export type SensorStatus = 'critical' | 'offline' | 'normal';
 
 export type ConnectionState = 'connecting' | 'live' | 'disconnected';
