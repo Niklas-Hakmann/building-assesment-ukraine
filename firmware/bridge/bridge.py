@@ -4,7 +4,7 @@ The microcontroller (see ../src/main.cpp) only streams raw acceleration samples
 as one JSON object per line, {"x":..,"y":..,"z":..} in m/s^2, over USB serial.
 This script turns a window of those samples into the same vibration metrics
 simulators/simulator.py fakes, and publishes them to sensors/{sensorType}/{sensorId}
-so the Java backend (IVibrationSensor) can't tell a real sensor from a mock one.
+so the Java backend (IAccelerometer) can't tell a real sensor from a mock one.
 """
 import json
 import os
@@ -25,7 +25,7 @@ BATTERY_LEVEL = int(os.getenv("BATTERY_LEVEL", "100"))
 MQTT_HOST = os.getenv("MQTT_HOST", "localhost")
 MQTT_PORT = int(os.getenv("MQTT_PORT", "1883"))
 SENSOR_ID = int(os.getenv("SENSOR_ID", "1"))
-SENSOR_TYPE = os.getenv("SENSOR_TYPE", "vibration")
+SENSOR_TYPE = os.getenv("SENSOR_TYPE", "accelerometer")
 CLIENT_ID = os.getenv("MQTT_CLIENT_ID", f"sensor-bridge-{SENSOR_ID}")
 
 AXES = ("x", "y", "z")

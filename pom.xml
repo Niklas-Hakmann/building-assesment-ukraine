@@ -21,7 +21,7 @@
         <module>core</module>
         <!-- Sensor plugins. Adding one here is the only build-level change a new
              sensor type needs; no existing module is touched. -->
-        <module>sensor-vibration</module>
+        <module>sensor-accelerometer</module>
         <module>sensor-temperature</module>
         <module>building</module>
     </modules>

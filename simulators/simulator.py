@@ -2,7 +2,7 @@
 
 Publishes one JSON reading per sensor every ``intervalSeconds`` to
 ``sensors/{sensorType}/{sensorId}``. Field names mirror ISensorGeneral and
-IVibrationSensor so the Java decoder can map them one-to-one.
+IAccelerometer so the Java decoder can map them one-to-one.
 
 Units: dominantFrequency in Hz, maxVibrations as peak acceleration in mg
 (thousandths of g) within the interval, totalVibrations as the number of
@@ -112,7 +112,7 @@ def build_payload(sensor, cfg, started, now):
         "durationTimer": int(now - started),            # seconds since start
         "messagesNumber": sensor.messages,
         "batteryLevel": cfg["batteryLevel"],
-        # IVibrationSensor
+        # IAccelerometer
         "dominantFrequency": frequency,                 # Hz
         "totalVibrations": total_vib,                   # events in interval
         "maxVibrations": max_vib,                       # peak, mg
@@ -121,7 +121,7 @@ def build_payload(sensor, cfg, started, now):
 
 def main():
     cfg = load_config(CONFIG)
-    sensor_type = cfg.get("sensorType", "vibration")
+    sensor_type = cfg.get("sensorType", "accelerometer")
     interval = float(cfg.get("intervalSeconds", 10.0))
     sensors = [Sensor(spec) for spec in cfg["sensors"]]
 

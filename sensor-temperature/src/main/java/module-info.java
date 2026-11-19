@@ -2,7 +2,7 @@
  * Sensor plugin — simulated temperature, and the proof that a new sensor type
  * costs one module.
  *
- * <p>Meant to stay a copy of {@code sensor-vibration} with a different type
+ * <p>Meant to stay a copy of {@code sensor-accelerometer} with a different type
  * name, payload and sensor ids — nothing else. If adding a sensor type ever
  * requires editing a module outside its own directory, the plugin boundary has
  * leaked.

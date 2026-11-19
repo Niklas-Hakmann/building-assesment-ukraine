@@ -1,6 +1,6 @@
 {
   "intervalSeconds": 10.0,
-  "sensorType": "vibration",
+  "sensorType": "accelerometer",
   "batteryLevel": 87,
 
   "sensors": [

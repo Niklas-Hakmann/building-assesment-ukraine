@@ -5,7 +5,7 @@ MQTT schema `simulators/simulator.py` fakes — the Java backend can't tell them
 apart. The RP2040 has no WiFi, so the pipeline is split in two:
 
 ```
-MMA8451 --I2C--> XIAO RP2040 --USB serial--> bridge.py --MQTT--> sensors/vibration/{id}
+MMA8451 --I2C--> XIAO RP2040 --USB serial--> bridge.py --MQTT--> sensors/accelerometer/{id}
 ```
 
 - `src/main.cpp` — reads the MMA8451 at ~100 Hz and streams raw samples
@@ -59,5 +59,5 @@ Env vars (all optional, defaults shown):
 Verify the real sensor's traffic the same way as the simulator's:
 
 ```bash
-docker compose exec mosquitto mosquitto_sub -t 'sensors/vibration/#' -v
+docker compose exec mosquitto mosquitto_sub -t 'sensors/accelerometer/#' -v
 ```

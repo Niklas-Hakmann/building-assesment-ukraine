@@ -1,4 +1,4 @@
-package com.buildingassessment.sensor.vibration;
+package com.buildingassessment.sensor.accelerometer;
 
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
@@ -19,9 +19,9 @@ import org.json.JSONObject;
 
 import com.buildingassessment.common.services.spi.IAccelerometer;
 
-public class AccelerationSensor implements IAccelerometer, MqttCallbackExtended {
+public class AccelerometerSensor implements IAccelerometer, MqttCallbackExtended {
 
-    private static final String VIBRATION_TOPIC_FILTER = "sensors/vibration/#";
+    private static final String TOPIC_FILTER = "sensors/accelerometer/#";
 
     private MqttClient mqttClient;
     private final Map<Integer, Reading> readings = new ConcurrentHashMap<>();
@@ -50,16 +50,16 @@ public class AccelerationSensor implements IAccelerometer, MqttCallbackExtended 
     @Override
     public void connectComplete(boolean reconnect, String serverURI) {
         try {
-            mqttClient.subscribe(VIBRATION_TOPIC_FILTER);
+            mqttClient.subscribe(TOPIC_FILTER);
         } catch (MqttException e) {
-            System.err.printf("[vibration] could not subscribe to %s on %s: %s%n",
-                    VIBRATION_TOPIC_FILTER, serverURI, e.getMessage());
+            System.err.printf("[accelerometer] could not subscribe to %s on %s: %s%n",
+                    TOPIC_FILTER, serverURI, e.getMessage());
         }
     }
 
     @Override
     public void connectionLost(Throwable cause) {
-        System.err.println("[vibration] MQTT connection lost, reconnecting: " + cause.getMessage());
+        System.err.println("[accelerometer] MQTT connection lost, reconnecting: " + cause.getMessage());
     }
 
     /**
@@ -93,7 +93,7 @@ public class AccelerationSensor implements IAccelerometer, MqttCallbackExtended 
                     maxVibrations.getInt("y"),
                     maxVibrations.getInt("z")));
         } catch (RuntimeException e) { // JSONException, DateTimeParseException, ...
-            System.err.printf("[vibration] ignoring malformed message on %s: %s%n", topic, e.getMessage());
+            System.err.printf("[accelerometer] ignoring malformed message on %s: %s%n", topic, e.getMessage());
         }
     }
 
@@ -125,7 +125,7 @@ public class AccelerationSensor implements IAccelerometer, MqttCallbackExtended 
     private Reading reading(int sensorID) {
         Reading reading = readings.get(sensorID);
         if (reading == null) {
-            throw new IllegalArgumentException("No reading received yet for vibration sensor " + sensorID);
+            throw new IllegalArgumentException("No reading received yet for accelerometer sensor " + sensorID);
         }
         return reading;
     }

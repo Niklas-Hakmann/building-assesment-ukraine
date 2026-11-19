@@ -4,9 +4,9 @@ Mock sensor publisher (Python + paho-mqtt) that publishes fake readings to the M
 broker on `sensors/{sensorType}/{sensorId}`. Configured by `sensors.json` — adding a
 sensor is a config change, not new code.
 
-Simulates 10 wall-mounted accelerometers, one per building (`sensors/vibration/1` …
+Simulates 10 wall-mounted accelerometers, one per building (`sensors/accelerometer/1` …
 `/10`), each sending one message every 10 seconds. Field names mirror
-`ISensorGeneral` and `IVibrationSensor`:
+`ISensorGeneral` and `IAccelerometer`:
 
 ```json
 {

@@ -23,7 +23,7 @@ public class Main {
 
         List<IAccelerometer> accelerometers = ServiceLocator.INSTANCE.locateAll(IAccelerometer.class);
         if (accelerometers.isEmpty()) {
-            System.err.println("[core] no IAccelerometer provider found — is sensor-vibration in plugins/?");
+            System.err.println("[core] no IAccelerometer provider found — is sensor-accelerometer in plugins/?");
         }
 
         // Bind the HTTP port before connecting to MQTT: once Paho's threads are

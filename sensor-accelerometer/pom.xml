@@ -11,9 +11,9 @@
         <relativePath>../pom.xml</relativePath>
     </parent>
 
-    <artifactId>sensor-vibration</artifactId>
+    <artifactId>sensor-accelerometer</artifactId>
     <packaging>jar</packaging>
-    <name>Sensor plugin — vibration/strain (real device)</name>
+    <name>Sensor plugin — accelerometer (real device)</name>
 
     <properties>
         <!-- The one line that makes this a drop-in plugin instead of a boot

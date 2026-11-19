@@ -40,7 +40,7 @@ pom.xml               aggregator
 common/               contracts — data, service roles, plugin SPI, ServiceLocator
 core/                 host — Main and wiring
   ui/                 dashboard (Vite + React + TS)
-sensor-vibration/     sensor plugin → plugins/
+sensor-accelerometer/ sensor plugin → plugins/
 sensor-temperature/   sensor plugin → plugins/
 mods-mvn/             build output: boot module layer
 plugins/              build output: sensor plugin JARs, loaded at runtime

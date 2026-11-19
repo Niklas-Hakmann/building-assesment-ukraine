@@ -27,7 +27,7 @@ common/               contracts — depends on nothing, and must stay that way
 core/                 host — requires common only
   .../core/server/        Main and wiring                            (empty)
   ui/                     dashboard (Vite + React + TypeScript)
-sensor-vibration/     sensor plugin — the real vibration/strain device  (empty)
+sensor-accelerometer/ sensor plugin — the real accelerometer device
 sensor-temperature/   sensor plugin — simulated                        (empty)
 
 mods-mvn/             build output: boot module layer
@@ -80,7 +80,7 @@ That is the only difference between a boot module and a drop-in plugin. After
 
 ```
 mods-mvn/   common-0.1.0-SNAPSHOT.jar  core-0.1.0-SNAPSHOT.jar
-plugins/    sensor-vibration-0.1.0-SNAPSHOT.jar  sensor-temperature-0.1.0-SNAPSHOT.jar
+plugins/    sensor-accelerometer-0.1.0-SNAPSHOT.jar  sensor-temperature-0.1.0-SNAPSHOT.jar
 ```
 
 `core` requires `common` and nothing else, and must keep it that way: a
