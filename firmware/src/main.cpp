@@ -28,14 +28,31 @@ void setup() {
 
 #ifdef MOCK_SENSOR
 // No sensor wired up yet. Stands in for a wall-mounted sensor idling around
-// gravity on z, with a ~3.5 Hz wobble plus noise on all three axes - just
-// enough signal for the bridge's FFT to have a dominant frequency to find.
+// gravity on z. Ramps a 40 s triangle cycle between calm (~2 Hz, small
+// amplitude) and a shake (~6 Hz, large amplitude) so dominantFrequencyX
+// crosses the backend's isCritical() threshold (4 Hz) once per cycle - the
+// dashboard visibly flips between Normal and Critical to prove the pipeline
+// is live, not just replaying one static reading.
 void readAcceleration(float &x, float &y, float &z) {
   float t = millis() / 1000.0;
+
+  // Step frequency/amplitude once every STEP_SECONDS (matches the bridge's
+  // default WINDOW_SECONDS) so each analysis window sees one stable tone
+  // instead of a sweep - a sweep spreads FFT energy across bins and the
+  // dominant-frequency estimate comes out wrong.
+  const float STEP_SECONDS = 10.0;
+  const float CYCLE_SECONDS = 40.0;
+  float steppedT = floor(t / STEP_SECONDS) * STEP_SECONDS;
+  float phase = fmod(steppedT, CYCLE_SECONDS) / CYCLE_SECONDS; // 0..1
+  float intensity = 1.0 - fabs(phase - 0.5) * 2.0;             // 0..1..0 triangle
+
+  float frequency = 2.0 + intensity * 4.0;                     // 2 Hz .. 6 Hz
+  float amplitude = 0.05 + intensity * 0.6;                    // calm .. shake
+
   float noise = (random(-100, 100) / 100.0) * 0.05;
-  x = 0.05 * sin(2 * PI * 3.5 * t) + noise;
-  y = 0.04 * sin(2 * PI * 3.5 * t + 1.0) + noise;
-  z = 9.81 + 0.3 * sin(2 * PI * 3.5 * t) + noise;
+  x = amplitude * sin(2 * PI * frequency * t) + noise;
+  y = amplitude * 0.8 * sin(2 * PI * frequency * t + 1.0) + noise;
+  z = 9.81 + amplitude * sin(2 * PI * frequency * t) + noise;
 }
 #else
 void readAcceleration(float &x, float &y, float &z) {
