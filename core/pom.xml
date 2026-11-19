@@ -24,5 +24,14 @@
             <groupId>com.buildingassessment</groupId>
             <artifactId>common</artifactId>
         </dependency>
+        <!-- JDBC driver, runtime only: the code talks to java.sql and the driver
+             is found through ServiceLoader, so nothing imports org.postgresql.
+             The install phase copies it into mods-mvn/. -->
+        <dependency>
+            <groupId>org.postgresql</groupId>
+            <artifactId>postgresql</artifactId>
+            <version>42.7.3</version>
+            <scope>runtime</scope>
+        </dependency>
     </dependencies>
 </project>

@@ -508,3 +508,80 @@ button.card:focus-visible { outline: 2px solid var(--accent); outline-offset: 2p
 .modal__close:hover { background: var(--surface-sunken); color: var(--ink); }
 .modal__close:focus-visible { outline: 2px solid var(--accent); }
 .modal .detail .axes { width: 100%; }
+
+/* Buildings: links that look like the rest of the UI */
+.home-link {
+  color: inherit;
+  text-decoration: none;
+}
+.home-link:focus-visible,
+.row-link:focus-visible,
+.back-link:focus-visible,
+a.card:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+a.card {
+  color: inherit;
+  text-decoration: none;
+  transition: border-color 0.15s ease, transform 0.15s ease;
+}
+a.card:hover { border-color: var(--muted); transform: translateY(-1px); }
+@media (prefers-reduced-motion: reduce) {
+  a.card { transition: none; }
+  a.card:hover { transform: none; }
+}
+
+.row-link {
+  color: inherit;
+  font-weight: 600;
+  text-decoration: none;
+}
+.row-link .muted { display: block; }
+.data-row:hover .row-link { text-decoration: underline; text-underline-offset: 3px; }
+.row-arrow {
+  width: 1%;
+  text-align: right;
+}
+.attention-text { color: var(--critical-ink); }
+
+.back-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 16px;
+  color: var(--ink-2);
+  font-weight: 500;
+  text-decoration: none;
+}
+.back-link:hover { color: var(--ink); }
+
+.building-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+.building-header__title {
+  margin: 0;
+  font-size: 20px;
+  font-weight: 650;
+}
+
+.notice {
+  margin: 0 0 16px;
+  padding: 10px 14px;
+  border: 1px solid var(--warning);
+  border-radius: 10px;
+  background: var(--warning-wash);
+  color: var(--ink-2);
+}
+
+@media (max-width: 560px) {
+  .col-sensors,
+  .row-arrow { display: none; }
+  .data-table tbody th { white-space: normal; }
+}

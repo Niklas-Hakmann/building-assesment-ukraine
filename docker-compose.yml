@@ -3,7 +3,7 @@
 #   docker compose up --build
 #   docker compose exec mosquitto mosquitto_sub -t 'sensors/#' -v   # watch the traffic
 #   docker compose exec postgres psql -U building -d building_assessment   # SQL shell
-#   JDBC from the host: jdbc:postgresql://localhost:5432/building_assessmentpostgres
+#   JDBC from the host: jdbc:postgresql://localhost:5432/building_assessment
 services:
   postgres:
     image: postgres:17.6-alpine
@@ -15,7 +15,23 @@ services:
       - "5432:5432"
     volumes:
       - postgres-data:/var/lib/postgresql/data
-      - ./init.sql:/docker-entrypoint-initdb.d/init.sql:ro
+    healthcheck:
+      test: ["CMD", "pg_isready", "-h", "localhost", "-U", "building", "-d", "building_assessment"]
+      interval: 2s
+      retries: 15
+
+  # Runs init.sql on every `docker compose up`, then exits. Safe to repeat
+  # because every statement in init.sql uses IF NOT EXISTS.
+  db-init:
+    image: postgres:17.6-alpine
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      PGPASSWORD: building
+    volumes:
+      - ./init.sql:/init.sql:ro
+    command: psql -h postgres -U building -d building_assessment -v ON_ERROR_STOP=1 -f /init.sql
 
   mosquitto:
     image: eclipse-mosquitto:2.0.20

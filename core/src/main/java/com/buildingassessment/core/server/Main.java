@@ -25,14 +25,28 @@ public class Main {
         if (accelerometers.isEmpty()) {
             System.err.println("[core] no IAccelerometer provider found — is sensor-vibration in plugins/?");
         }
+
+        // Bind the HTTP port before connecting to MQTT: once Paho's threads are
+        // running they keep the JVM alive, so a "port in use" error after that
+        // would leave a half-started process behind instead of exiting.
+        int port = Integer.parseInt(System.getenv().getOrDefault("API_PORT", "8080"));
+        ApiServer server;
+        try {
+            // Relative to the working directory, which `mvn -N exec:exec` sets to the repo root.
+            server = new ApiServer(port, new SensorReadings(accelerometers), new BuildingRepository(),
+                    Path.of("core", "ui", "dist"));
+        } catch (java.net.BindException e) {
+            System.err.println("[core] port " + port + " is already in use — is the dashboard already running?"
+                    + " Stop it, or start this one with API_PORT=<other port>.");
+            System.exit(1);
+            return;
+        }
+
         for (IAccelerometer sensor : accelerometers) {
             sensor.connect();
             System.out.println("[core] connected " + sensor.getClass().getSimpleName() + " to MQTT");
         }
 
-        int port = Integer.parseInt(System.getenv().getOrDefault("API_PORT", "8080"));
-        // Relative to the working directory, which `mvn -N exec:exec` sets to the repo root.
-        ApiServer server = new ApiServer(port, new SensorReadings(accelerometers), Path.of("core", "ui", "dist"));
         server.start();
         System.out.println("[core] dashboard API on http://localhost:" + server.port() + "/api/sensors");
     }
