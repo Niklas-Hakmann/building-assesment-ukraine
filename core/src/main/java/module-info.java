@@ -18,5 +18,6 @@
  * {@code common}, which is where the matching {@code uses} declarations live.
  */
 module com.buildingassessment.core {
-    requires com.buildingassessment.common;
+    requires common;
+    requires jdk.httpserver;
 }

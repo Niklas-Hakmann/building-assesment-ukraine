@@ -3,19 +3,25 @@ package com.buildingassessment.common.data;
 import java.util.Date;
 import java.util.List;
 
-public abstract class Sensor {
+/**
+ * What every sensor plugin can do, regardless of type. Sensor-specific SPI
+ * interfaces (e.g. {@code IAccelerometer}) extend this, so the host can call
+ * {@link #connect()} on whatever {@code ServiceLocator} hands back without
+ * casting.
+ */
+public interface Sensor {
 
-    public abstract void connect();
-    public abstract List<Integer> getSensorIDs();
-    public abstract int setSensorID(int sensorID);
-    public abstract Date getSensorTime(int sensorID);
-    public abstract int durationTimer(int sensorID);
-    public abstract int messagesNumber(int sensorID); // how many messages is send?
+    void connect();
+    List<Integer> getSensorIDs();
+    int setSensorID(int sensorID);
+    Date getSensorTime(int sensorID);
+    int durationTimer(int sensorID);
+    int messagesNumber(int sensorID); // how many messages is send?
 
-    public abstract int batteryLevel(int sensorID);
-    public abstract int signalPercentage(int sensorID);
+    int batteryLevel(int sensorID);
+    int signalPercentage(int sensorID);
 
-    public abstract void sendNotification(int reading);
+    void sendNotification(int reading);
 
-    public abstract boolean isCritical(int sensorID);
+    boolean isCritical(int sensorID);
 }
