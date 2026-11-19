@@ -1,4 +1,4 @@
-package com.buildingassessment.sensor.vibration;
+﻿package com.buildingassessment.sensor.vibration;
 
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
+import com.buildingassessment.common.services.spi.IAccelerometer;
 import org.eclipse.paho.client.mqttv3.MqttCallback;
 import org.eclipse.paho.client.mqttv3.MqttClient;
 import org.eclipse.paho.client.mqttv3.MqttConnectOptions;
@@ -17,9 +18,8 @@ import org.eclipse.paho.client.mqttv3.persist.MemoryPersistence;
 import org.json.JSONObject;
 
 import com.buildingassessment.common.data.Sensor;
-import com.buildingassessment.common.services.spi.IAccelerationSensor;
 
-public class VibrationSensor extends Sensor implements IAccelerationSensor, MqttCallback {
+public class VibrationSensor extends Sensor implements IAccelerometer, MqttCallback {
 
     private static final String VIBRATION_TOPIC_FILTER = "sensors/vibration/#";
 

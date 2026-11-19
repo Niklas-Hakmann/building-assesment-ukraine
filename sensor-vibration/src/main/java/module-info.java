@@ -1,5 +1,4 @@
 import com.buildingassessment.sensor.vibration.VibrationSensor;
-import com.buildingassessment.common.services.spi.IAccelerationSensor;
 
 module sensorVibration {
     requires common;
