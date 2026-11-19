@@ -41,6 +41,7 @@ INSERT INTO Sensor (Sensor_ID, type, Address) VALUES
     (7,  'accelerometer', 2),
     (8,  'accelerometer', 3),
     (9,  'accelerometer', 3),
-    (10, 'accelerometer', 3);
+    (10, 'accelerometer', 3),
+    (101, 'accelerometer', 3);
 
 
