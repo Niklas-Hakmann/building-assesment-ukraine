@@ -13,5 +13,4 @@ public interface IAccelerationSensor {
     public int maxVibrationsX(int sensorID);
     public int maxVibrationsY(int sensorID);
     public int maxVibrationsZ(int sensorID);
-
 }

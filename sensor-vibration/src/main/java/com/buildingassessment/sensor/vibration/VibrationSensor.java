@@ -1,4 +1,4 @@
-﻿package com.buildingassessment.sensor.vibration;
+package com.buildingassessment.sensor.vibration;
 
 import java.time.OffsetDateTime;
 import java.util.ArrayList;

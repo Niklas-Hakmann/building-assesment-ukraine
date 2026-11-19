@@ -1,4 +1,4 @@
-﻿package com.buildingassessment.common.data;
+package com.buildingassessment.common.data;
 
 import java.util.Date;
 import java.util.List;

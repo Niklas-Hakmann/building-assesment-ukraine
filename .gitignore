@@ -6,6 +6,9 @@ target/
 mods-mvn/
 plugins/*.jar
 
+# PlatformIO (build output - never commit)
+firmware/.pio/
+
 # Node
 node_modules/
 dist/
